@@ -19,10 +19,15 @@ public class AddNewContactActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText phoneNumberEditText;
 
+    private DataBaseDAO dao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_contact);
+
+        dao = new DataBaseDAO(this);
+        dao.open();
 
         //Get EditText references
         nameEditText = (EditText) findViewById(R.id.input_name);
@@ -44,9 +49,12 @@ public class AddNewContactActivity extends AppCompatActivity {
         });
     }
 
-    //TODO: Save the instance of Contact to the database
     private void createNewContact(String name, String lastName, String email, String phoneNumber) {
         Contact contact = new Contact(name, lastName, email, phoneNumber);
+
+        dao.addContact(contact);
+        dao.close();
+
         clearEditText();
     }
 

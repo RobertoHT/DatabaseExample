@@ -20,11 +20,15 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ContactAdapter contactAdapter;
     private ArrayList<Contact> contactArrayList;
+    private DataBaseDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dao = new DataBaseDAO(this);
+        dao.open();
 
         contactArrayList = getContactsFromDB();
 
@@ -52,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
         contactAdapter.notifyDataSetChanged();
     }
 
-    //TODO: get the list of contacts from database
     private ArrayList<Contact> getContactsFromDB() {
-        return new ArrayList<>();
+        ArrayList<Contact> contacts = dao.getAllContacts();
+        dao.close();
+
+        return contacts;
     }
 
 }
